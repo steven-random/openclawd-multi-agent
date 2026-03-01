@@ -1,0 +1,135 @@
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "codex": {
+        "baseUrl": "http://127.0.0.1:9999",
+        "apiKey": "local",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "gpt-5.3-codex",
+            "name": "Codex (via local proxy)",
+            "reasoning": false,
+            "input": ["text"],
+            "contextWindow": 128000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "codex/gpt-5.3-codex"
+      },
+      "workspace": "/home/YOUR_USER/clawd",
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      },
+      "memorySearch": {
+        "provider": "local",
+        "local": {
+          "modelPath": "hf:ggml-org/embeddinggemma-300m-qat-q8_0-GGUF/embeddinggemma-300m-qat-Q8_0.gguf"
+        },
+        "fallback": "none"
+      }
+    },
+    "list": [
+      {
+        "id": "email",
+        "name": "Email Agent",
+        "workspace": "/home/YOUR_USER/clawd-email",
+        "model": { "primary": "codex/gpt-5.3-codex" },
+        "tools": {
+          "fs": { "workspaceOnly": true },
+          "exec": { "security": "allowlist" }
+        }
+      },
+      {
+        "id": "stock",
+        "name": "Stock Analyst",
+        "workspace": "/home/YOUR_USER/clawd-stock",
+        "model": { "primary": "codex/gpt-5.3-codex" },
+        "tools": {
+          "fs": { "workspaceOnly": true },
+          "exec": { "security": "deny" }
+        }
+      }
+    ]
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "apiKey": "YOUR_WEB_SEARCH_API_KEY"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    },
+    "exec": {
+      "security": "deny"
+    },
+    "fs": {
+      "workspaceOnly": true
+    }
+  },
+  "bindings": [
+    {
+      "agentId": "email",
+      "match": {
+        "channel": "slack",
+        "peer": { "kind": "channel", "id": "YOUR_SLACK_EMAIL_CHANNEL_ID" }
+      }
+    },
+    {
+      "agentId": "stock",
+      "match": {
+        "channel": "slack",
+        "peer": { "kind": "channel", "id": "YOUR_SLACK_STOCK_CHANNEL_ID" }
+      }
+    }
+  ],
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "channels": {
+    "slack": {
+      "mode": "socket",
+      "enabled": true,
+      "botToken": "xoxb-YOUR-BOT-TOKEN",
+      "appToken": "xapp-YOUR-APP-TOKEN",
+      "groupPolicy": "allowlist",
+      "dm": { "enabled": false },
+      "nativeStreaming": false,
+      "streaming": "off",
+      "channels": {
+        "YOUR_SLACK_EMAIL_CHANNEL_ID": { "requireMention": false },
+        "YOUR_SLACK_STOCK_CHANNEL_ID": { "requireMention": false }
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "YOUR_GATEWAY_TOKEN_HERE"
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    }
+  }
+}

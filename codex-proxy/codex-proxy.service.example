@@ -1,0 +1,15 @@
+[Unit]
+Description=Codex Proxy (OpenAI API → codex exec bridge)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/YOUR_USER/codex-proxy
+ExecStart=/usr/bin/python3 /home/YOUR_USER/codex-proxy/proxy.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
