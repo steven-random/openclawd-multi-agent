@@ -131,5 +131,22 @@
     "install": {
       "nodeManager": "npm"
     }
+  },
+  "plugins": {
+    "allow": ["db-tool"],
+    "entries": {
+      "db-tool": {
+        "enabled": true,
+        "config": {
+          "host":     "YOUR_PG_HOST",
+          "port":     5432,
+          "database": "YOUR_DB_NAME",
+          "user":     "YOUR_DB_USER",
+          "password": "YOUR_DB_PASSWORD",
+          "ssl":      false,
+          "maxRows":  100
+        }
+      }
+    }
   }
 }

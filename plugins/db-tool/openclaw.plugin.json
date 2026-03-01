@@ -1,0 +1,28 @@
+{
+  "id": "db-tool",
+  "name": "DB Query Tool (PostgreSQL)",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "host":     { "type": "string" },
+      "port":     { "type": "number" },
+      "database": { "type": "string" },
+      "user":     { "type": "string" },
+      "password": { "type": "string" },
+      "ssl":      { "type": "boolean" },
+      "maxRows":  { "type": "number" }
+    },
+    "required": ["host", "database", "user", "password"]
+  },
+  "uiHints": {
+    "host":     { "label": "PostgreSQL Host", "placeholder": "localhost" },
+    "port":     { "label": "Port", "placeholder": "5432" },
+    "database": { "label": "Database Name" },
+    "user":     { "label": "Username" },
+    "password": { "label": "Password", "sensitive": true },
+    "ssl":      { "label": "Use SSL" },
+    "maxRows":  { "label": "Max rows returned", "placeholder": "100" }
+  }
+}

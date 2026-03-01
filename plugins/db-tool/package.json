@@ -1,0 +1,12 @@
+{
+  "name": "db-tool",
+  "version": "1.0.0",
+  "description": "OpenClaw plugin: per-agent PostgreSQL read-only query tool",
+  "private": true,
+  "openclaw": {
+    "extensions": ["./index.ts"]
+  },
+  "dependencies": {
+    "pg": "^8.13.3"
+  }
+}
